@@ -1,0 +1,11 @@
+Date=`date "+%d-%m-%y_%H:%M"`
+
+echo "Please enter the username :\n"
+read user
+echo "Now enter the user password :\n"
+read pass
+echo "And now the IP of the FTP server :\n"
+read IP
+
+tar -zcvf Backup_$Date.tar.gz /etc/proftpd/
+echo "lcd /home/$user\nmirror -R ../../FTP/Pour_aller_plus_loin/B*\nexit\n" | lftp -u $usern,$pass $IP

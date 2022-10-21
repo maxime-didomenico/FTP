@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+i=2
+nb=`wc Shell_Userlist.csv > a && awk '{print $1}' FS=" " a && rm a`
+nb=`expr $nb + 1`
+
+while [ $i -lt $nb ]
+do
+	sed -n "$i p" Shell_Userlist.csv > buff
+	id=`awk '{print $1}' FS="," buff`
+	fin=`awk '{print $2}' FS="," buff`
+	lan=`awk '{print $3}' FS="," buff`
+  	psw=`awk '{print $4}' FS="," buff`
+  	rgt=`awk '{print $5}' FS="," buff`
+	useradd $name --shell /bin/false --home /home/$name
+	passwd $name $pswd
+	echo $id $fin
+	if [[ "$rgt" == *"Admin"* ]]
+		then
+			echo "admin"
+			i=`expr $i + 1`
+	else
+		echo "pas admin"	
+		usermod -aG sudo $name
+		i=`expr $i + 1`
+	fi
+	rm buff
+done

@@ -1,0 +1,39 @@
+# update all packages
+apt-get update -y
+apt-get upgrade -y
+
+# install proftpd (Job 2)
+apt-get install proftpd-* -y
+ 
+# install SSL
+apt-get install openssl -y
+ 
+# add users (Job3)
+useradd merry
+echo -ne "kalimac\nkalimac\n" | passwd merry
+ 
+useradd pippin
+echo -ne "secondbreakfast\nsecondbreakfast\n" | passwd pippin
+ 
+# create ssl directory
+mkdir /etc/proftpd/ssl
+ 
+# generate SSL key
+echo -ne "\n\n\n\n\n\n\n" | openssl req -new -x509 -days 365 -nodes -out /etc/proftpd/ssl/proftpd.cert.pem -keyout /etc/proftpd/ssl/proftpd.key.pem
+ 
+# change rights for ssl key
+chmod 0640 /etc/proftpd/ssl/proftpd.key.pem
+
+# config with a link module.conf
+mv /ftp/modules.conf /etc/proftpd/modules.conf
+
+# config with a link tls.conf
+mv /ftp/tls.conf /etc/proftpd/tls.conf
+ 
+# config with a link proftpd.conf
+mv /ftp/proftpd.conf /etc/proftpd/proftpd.conf
+
+systemctl enable proftpd
+ 
+# reboot ftp server
+systemctl restart proftpd
