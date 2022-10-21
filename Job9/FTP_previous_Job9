@@ -20,5 +20,5 @@ do
 		i=`expr $i + 1`
 	fi
 	rm buff
-	mv proftpd.conf /etc/proftpd/proftp.conf
+	mv proftp.conf /etc/proftpd/proftp.conf
 done
